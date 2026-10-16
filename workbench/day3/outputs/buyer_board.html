@@ -6,24 +6,25 @@
 <title>바이어 리스크 한눈에</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #F5F6F8;
-    --surface: #FFFFFF;
-    --border: #D9DEE4;
+    --bg: #FAF8F3;
+    --surface: #FAF8F3;
+    --border: #CFCAC0;
     --text: #1B2026;
-    --text-2: #5A6472;
+    --text-2: #5E5A52;
     --accent: #1D4F7A;
     --grade-s: #1E7344;
     --grade-a: #55701A;
     --grade-b: #9A5B00;
     --grade-c: #B3261E;
     --font: 'Noto Sans KR', sans-serif;
-    --fs-display: 700 40px/1.15 var(--font);
-    --fs-display-sm: 700 32px/1.15 var(--font);
-    --fs-title: 700 28px/1.3 var(--font);
-    --fs-section: 700 20px/1.4 var(--font);
+    --font-serif: 'Noto Serif KR', serif;
+    --fs-display: 700 48px/1.05 var(--font);
+    --fs-display-sm: 700 36px/1.1 var(--font);
+    --fs-title: 700 44px/1.2 var(--font-serif);
+    --fs-section: 700 24px/1.35 var(--font-serif);
     --fs-body: 400 16px/1.6 var(--font);
     --fs-small: 400 14px/1.5 var(--font);
     --sp-1: 4px;
@@ -46,29 +47,35 @@
   .wrap { max-width: var(--page-max); margin: 0 auto; padding: 0 var(--sp-7); }
   .num { font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
 
-  .band { background: var(--accent); color: var(--surface); font: var(--fs-small); }
-  .band .wrap { padding-top: var(--sp-2); padding-bottom: var(--sp-2); }
-  .head { padding-top: var(--sp-7); padding-bottom: var(--sp-6); }
+  .band { color: var(--text-2); font: var(--fs-small); }
+  .band .wrap { padding-top: var(--sp-6); padding-bottom: 0; }
+  .head { padding-top: var(--sp-5); margin-bottom: var(--sp-7); }
+  .head::after { content: ''; display: block; margin-top: var(--sp-5); border-bottom: 1px solid var(--text); }
   .head h1 { font: var(--fs-title); color: var(--text); }
   .head p { font: var(--fs-small); color: var(--text-2); margin-top: var(--sp-1); }
 
-  main { display: flex; flex-direction: column; gap: var(--sp-6); }
-  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-           box-shadow: var(--shadow); padding: var(--sp-5); min-width: 0; }
+  main { display: flex; flex-direction: column; gap: var(--sp-8); }
+  .card { background: var(--bg); border-top: 1px solid var(--border); box-shadow: var(--shadow);
+           padding: var(--sp-4) 0 0; min-width: 0; }
   .card h2 { font: var(--fs-section); color: var(--text); }
-  .sub { font: var(--fs-small); color: var(--text-2); margin-top: var(--sp-1); }
+  .sub { font: var(--fs-small); color: var(--text-2); margin-top: var(--sp-2); }
 
-  .kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-4); }
+  .kpis { display: grid; grid-template-columns: minmax(0, 0.7fr) repeat(3, minmax(0, 1fr)); gap: var(--sp-5); }
   .k-label { font: var(--fs-small); font-weight: 500; color: var(--text-2); }
   .k-num { font: var(--fs-display); color: var(--text); font-variant-numeric: tabular-nums; white-space: nowrap;
             overflow: hidden; margin-top: var(--sp-3); }
   .k-num.f1 { font: var(--fs-display-sm); }
-  .k-num.f2 { font: var(--fs-title); }
-  .k-num.f3 { font: var(--fs-section); }
+  .k-num.f2 { font: var(--fs-section); font-family: var(--font); }  /* 숫자는 고딕 그대로, 크기만 한 단계 */
   .k-unit { font: var(--fs-small); font-weight: 500; color: var(--text-2); margin-left: var(--sp-1); }
   .k-note { font: var(--fs-small); color: var(--text-2); margin-top: var(--sp-2); }
 
-  .pair { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--sp-4); }
+  .split { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-8); }
+  .side, .mainc { display: flex; flex-direction: column; gap: var(--sp-8); min-width: 0; }
+  @media (min-width: 1100px) {
+    .split { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); grid-template-areas: 'main side'; column-gap: var(--sp-7); }
+    .mainc { grid-area: main; }
+    .side { grid-area: side; position: sticky; top: var(--sp-5); align-self: start; gap: var(--sp-7); }
+  }
   .dist-bar { display: flex; gap: var(--sp-1); height: var(--sp-6); margin-top: var(--sp-5); }
   .seg { flex-basis: 0; min-width: var(--sp-1); border-radius: var(--radius-sm); display: flex; align-items: center;
           padding: 0 var(--sp-2); color: var(--surface); font: var(--fs-small); font-weight: 500; white-space: nowrap;
@@ -93,14 +100,16 @@
 
   .line-label { display: flex; justify-content: space-between; align-items: baseline; margin-top: var(--sp-5);
                  font: var(--fs-small); color: var(--text-2); }
-  .line-label strong { font: var(--fs-title); color: var(--accent); font-variant-numeric: tabular-nums; }
+  .line-label strong { font: var(--fs-display-sm); color: var(--accent); font-variant-numeric: tabular-nums; }
   input[type=range] { width: 100%; margin: var(--sp-3) 0 0; accent-color: var(--accent); }
   .scale { display: flex; justify-content: space-between; font: var(--fs-small); color: var(--text-2); }
   .delta { margin-top: var(--sp-4); padding-top: var(--sp-3); border-top: 1px solid var(--border);
             font: var(--fs-body); font-weight: 500; color: var(--text); }
 
   .top { margin-top: var(--sp-4); }
-  .top td.name { font-weight: 500; }
+  .top td.name { width: 100%; }
+  .t-name { display: block; font-weight: 500; }
+  .t-meta { display: block; font: var(--fs-small); color: var(--text-2); margin-top: var(--sp-1); }
   .top-cards { display: none; list-style: none; padding: 0; margin-top: var(--sp-4); }
   .tcard { border-top: 1px solid var(--border); padding: var(--sp-4) 0; }
   .tcard:last-child { padding-bottom: 0; }
@@ -119,23 +128,22 @@
   .reg-c { height: 100%; background: var(--grade-c); }
   .reg-note { font: var(--fs-small); color: var(--text-2); margin-top: var(--sp-1); }
 
-  .foot { font: var(--fs-small); color: var(--text-2); padding-top: var(--sp-7); padding-bottom: var(--sp-7); }
+  .foot { font: var(--fs-small); color: var(--text-2); margin-top: var(--sp-8); padding-bottom: var(--sp-7); }
+  .foot::before { content: ''; display: block; margin-bottom: var(--sp-4); border-top: 1px solid var(--border); }
 
   @media (max-width: 900px) {
-    .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .pair { grid-template-columns: minmax(0, 1fr); }
+    .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--sp-6); }
   }
   @media (max-width: 640px) {
     .wrap { padding: 0 var(--sp-4); }
-    .band .wrap { padding-top: var(--sp-2); padding-bottom: var(--sp-2); }
-    .head { padding-top: var(--sp-5); padding-bottom: var(--sp-5); }
-    main { gap: var(--sp-4); }
-    .card { padding: var(--sp-4); }
-    .kpis { gap: var(--sp-3); }
+    .band .wrap { padding-top: var(--sp-5); }
+    .head { margin-bottom: var(--sp-6); }
+    main { gap: var(--sp-7); }
+    .kpis { column-gap: var(--sp-4); }
     .k-num { font: var(--fs-display-sm); }
     .top { display: none; }
     .top-cards { display: block; }
-    .foot { padding-top: var(--sp-6); padding-bottom: var(--sp-6); }
+    .foot { margin-top: var(--sp-7); padding-bottom: var(--sp-6); }
   }
 </style>
 </head>
@@ -162,39 +170,43 @@
       <p class="k-note">연체가 있는 곳 26곳</p></div>
   </section>
 
-  <section class="pair">
-    <div class="card">
-      <h2>신호등 등급 분포</h2>
-      <p class="sub">막대 길이는 곳 수입니다. 등급은 지금 위험 선 기준입니다.</p>
-      <div class="dist-bar" role="img" aria-label="등급별 곳 수 막대"><div class="seg g-S" data-g="S" style="flex-grow:126"><span>S 126</span></div><div class="seg g-A" data-g="A" style="flex-grow:4"><span></span></div><div class="seg g-B" data-g="B" style="flex-grow:3"><span></span></div><div class="seg g-C" data-g="C" style="flex-grow:17"><span>C 17</span></div></div>
-      <table class="dist-table"><tbody><tr><td><span class="chip g-S">S</span></td><td class="num" data-dn="S">126곳</td><td class="num" data-da="S">$2,630,341</td></tr><tr><td><span class="chip g-A">A</span></td><td class="num" data-dn="A">4곳</td><td class="num" data-da="A">$144,250</td></tr><tr><td><span class="chip g-B">B</span></td><td class="num" data-dn="B">3곳</td><td class="num" data-da="B">$468,531</td></tr><tr><td><span class="chip g-C">C</span></td><td class="num" data-dn="C">17곳</td><td class="num" data-da="C">$1,047,782</td></tr></tbody></table>
-    </div>
-    <div class="card">
-      <h2>위험 선</h2>
-      <p class="sub">위험 점수가 선 이상이면 C, 선의 절반 이상이면 B, 4분의 1 이상이면 A, 나머지는 S입니다.</p>
-      <label class="line-label" for="line">위험 선 <strong id="line-val">17%</strong></label>
-      <input type="range" id="line" min="5" max="30" step="1" value="17">
-      <div class="scale"><span>5%</span><span>30%</span></div>
-      <p class="delta" id="delta">처음 17%와 같습니다</p>
-    </div>
-  </section>
+  <!-- 2단: 넓은 화면은 왼쪽(전화할 10곳 · 지역) + 오른쪽(위험 선 · 분포, 따라옴). 휴대폰은 위험 선 → 분포 → 10곳 → 지역 -->
+  <div class="split">
+    <aside class="side" aria-label="위험 선과 등급 분포">
+      <section class="card">
+        <h2>위험 선</h2>
+        <p class="sub">위험 점수가 선 이상이면 C, 선의 절반 이상이면 B, 4분의 1 이상이면 A, 나머지는 S입니다.</p>
+        <label class="line-label" for="line">위험 선 <strong id="line-val">17%</strong></label>
+        <input type="range" id="line" min="5" max="30" step="1" value="17">
+        <div class="scale"><span>5%</span><span>30%</span></div>
+        <p class="delta" id="delta">처음 17%와 같습니다</p>
+      </section>
+      <section class="card">
+        <h2>신호등 등급 분포</h2>
+        <p class="sub">막대 길이는 곳 수입니다. 등급은 지금 위험 선 기준입니다.</p>
+        <div class="dist-bar" role="img" aria-label="등급별 곳 수 막대"><div class="seg g-S" data-g="S" style="flex-grow:126"><span>S 126</span></div><div class="seg g-A" data-g="A" style="flex-grow:4"><span></span></div><div class="seg g-B" data-g="B" style="flex-grow:3"><span></span></div><div class="seg g-C" data-g="C" style="flex-grow:17"><span>C 17</span></div></div>
+        <table class="dist-table"><tbody><tr><td><span class="chip g-S">S</span></td><td class="num" data-dn="S">126곳</td><td class="num" data-da="S">$2,630,341</td></tr><tr><td><span class="chip g-A">A</span></td><td class="num" data-dn="A">4곳</td><td class="num" data-da="A">$144,250</td></tr><tr><td><span class="chip g-B">B</span></td><td class="num" data-dn="B">3곳</td><td class="num" data-da="B">$468,531</td></tr><tr><td><span class="chip g-C">C</span></td><td class="num" data-dn="C">17곳</td><td class="num" data-da="C">$1,047,782</td></tr></tbody></table>
+      </section>
+    </aside>
+    <div class="mainc">
+    <section class="card">
+      <h2>위험 상위 10</h2>
+      <p class="sub">이번 주에 전화할 곳입니다. 위험 점수가 높은 순서이고, 신호는 확인해 볼 이유입니다.</p>
+      <table class="top">
+        <thead><tr><th>바이어 · 나라 · 위험 신호</th><th>등급</th><th class="num">위험 점수</th><th class="num">채권</th>
+          <th class="num">연체</th></tr></thead>
+        <tbody><tr><td class="name"><span class="t-name">Changzhou Wenant Engineering Co., Ltd.</span><span class="t-meta">중국 · 최근 1년 분쟁 비율 50%</span></td><td><span class="chip g-C" data-i="47">C</span></td><td class="num">77.0%</td><td class="num">$24,530</td><td class="num">$24,530</td></tr><tr><td class="name"><span class="t-name">Camolin Instrumentación S.A. de C.V.</span><span class="t-meta">멕시코 · 연체 금액 $59,200</span></td><td><span class="chip g-C" data-i="133">C</span></td><td class="num">70.9%</td><td class="num">$93,460</td><td class="num">$59,200</td></tr><tr><td class="name"><span class="t-name">Tevura Automation Inc.</span><span class="t-meta">미국 · 지급 지연이 늘어나는 중(+30일)</span></td><td><span class="chip g-C" data-i="117">C</span></td><td class="num">70.3%</td><td class="num">$20,060</td><td class="num">$20,060</td></tr><tr><td class="name"><span class="t-name">Kalaro Industrial S.A. de C.V.</span><span class="t-meta">멕시코 · 지급 지연이 늘어나는 중(+29일)</span></td><td><span class="chip g-C" data-i="30">C</span></td><td class="num">69.3%</td><td class="num">$70,120</td><td class="num">$19,200</td></tr><tr><td class="name"><span class="t-name">Corost Comercializadora S.A. de C.V.</span><span class="t-meta">멕시코 · 연체 금액 $27,300</span></td><td><span class="chip g-C" data-i="46">C</span></td><td class="num">67.4%</td><td class="num">$54,540</td><td class="num">$27,300</td></tr><tr><td class="name"><span class="t-name">Galeth Instruments LLC</span><span class="t-meta">미국 · 연체 금액 $18,310</span></td><td><span class="chip g-C" data-i="61">C</span></td><td class="num">55.5%</td><td class="num">$35,660</td><td class="num">$18,310</td></tr><tr><td class="name"><span class="t-name">Marano Home &amp; Lab Stores FZE</span><span class="t-meta">아랍에미리트 · 최근 30일 부정적인 뉴스가 많음</span></td><td><span class="chip g-C" data-i="65">C</span></td><td class="num">54.2%</td><td class="num">$80,550</td><td class="num">$10,610</td></tr><tr><td class="name"><span class="t-name">Sarant Ingeniería S.A. de C.V.</span><span class="t-meta">멕시코 · 연체 금액 $10,190</span></td><td><span class="chip g-C" data-i="103">C</span></td><td class="num">43.7%</td><td class="num">$10,190</td><td class="num">$10,190</td></tr><tr><td class="name"><span class="t-name">PT Sarida Sarana Industri</span><span class="t-meta">인도네시아 · 지급 지연이 늘어나는 중(+36일)</span></td><td><span class="chip g-C" data-i="58">C</span></td><td class="num">41.4%</td><td class="num">$40,560</td><td class="num">$4,980</td></tr><tr><td class="name"><span class="t-name">Galost Automation Ltd.</span><span class="t-meta">인도 · 연체 금액 $21,910</span></td><td><span class="chip g-C" data-i="118">C</span></td><td class="num">38.3%</td><td class="num">$48,780</td><td class="num">$21,910</td></tr></tbody>
+      </table>
+      <ol class="top-cards"><li class="tcard"><div class="tc-head"><span class="tc-name">Changzhou Wenant Engineering Co., Ltd.</span><span class="chip g-C" data-i="47">C</span></div><p class="tc-meta">중국 · 동아시아</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">77.0%</dd></div><div><dt>채권</dt><dd class="num">$24,530</dd></div><div><dt>연체</dt><dd class="num">$24,530</dd></div></dl><p class="tc-sig">최근 1년 분쟁 비율 50%</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Camolin Instrumentación S.A. de C.V.</span><span class="chip g-C" data-i="133">C</span></div><p class="tc-meta">멕시코 · 북미·중남미</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">70.9%</dd></div><div><dt>채권</dt><dd class="num">$93,460</dd></div><div><dt>연체</dt><dd class="num">$59,200</dd></div></dl><p class="tc-sig">연체 금액 $59,200</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Tevura Automation Inc.</span><span class="chip g-C" data-i="117">C</span></div><p class="tc-meta">미국 · 북미·중남미</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">70.3%</dd></div><div><dt>채권</dt><dd class="num">$20,060</dd></div><div><dt>연체</dt><dd class="num">$20,060</dd></div></dl><p class="tc-sig">지급 지연이 늘어나는 중(+30일)</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Kalaro Industrial S.A. de C.V.</span><span class="chip g-C" data-i="30">C</span></div><p class="tc-meta">멕시코 · 북미·중남미</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">69.3%</dd></div><div><dt>채권</dt><dd class="num">$70,120</dd></div><div><dt>연체</dt><dd class="num">$19,200</dd></div></dl><p class="tc-sig">지급 지연이 늘어나는 중(+29일)</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Corost Comercializadora S.A. de C.V.</span><span class="chip g-C" data-i="46">C</span></div><p class="tc-meta">멕시코 · 북미·중남미</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">67.4%</dd></div><div><dt>채권</dt><dd class="num">$54,540</dd></div><div><dt>연체</dt><dd class="num">$27,300</dd></div></dl><p class="tc-sig">연체 금액 $27,300</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Galeth Instruments LLC</span><span class="chip g-C" data-i="61">C</span></div><p class="tc-meta">미국 · 북미·중남미</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">55.5%</dd></div><div><dt>채권</dt><dd class="num">$35,660</dd></div><div><dt>연체</dt><dd class="num">$18,310</dd></div></dl><p class="tc-sig">연체 금액 $18,310</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Marano Home &amp; Lab Stores FZE</span><span class="chip g-C" data-i="65">C</span></div><p class="tc-meta">아랍에미리트 · 중동·아프리카</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">54.2%</dd></div><div><dt>채권</dt><dd class="num">$80,550</dd></div><div><dt>연체</dt><dd class="num">$10,610</dd></div></dl><p class="tc-sig">최근 30일 부정적인 뉴스가 많음</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Sarant Ingeniería S.A. de C.V.</span><span class="chip g-C" data-i="103">C</span></div><p class="tc-meta">멕시코 · 북미·중남미</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">43.7%</dd></div><div><dt>채권</dt><dd class="num">$10,190</dd></div><div><dt>연체</dt><dd class="num">$10,190</dd></div></dl><p class="tc-sig">연체 금액 $10,190</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">PT Sarida Sarana Industri</span><span class="chip g-C" data-i="58">C</span></div><p class="tc-meta">인도네시아 · 동남아·남아</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">41.4%</dd></div><div><dt>채권</dt><dd class="num">$40,560</dd></div><div><dt>연체</dt><dd class="num">$4,980</dd></div></dl><p class="tc-sig">지급 지연이 늘어나는 중(+36일)</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Galost Automation Ltd.</span><span class="chip g-C" data-i="118">C</span></div><p class="tc-meta">인도 · 동남아·남아</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">38.3%</dd></div><div><dt>채권</dt><dd class="num">$48,780</dd></div><div><dt>연체</dt><dd class="num">$21,910</dd></div></dl><p class="tc-sig">연체 금액 $21,910</p></li></ol>
+    </section>
 
-  <section class="card">
-    <h2>위험 상위 10</h2>
-    <p class="sub">이번 주에 전화할 곳입니다. 위험 점수가 높은 순서이고, 신호는 확인해 볼 이유입니다.</p>
-    <table class="top">
-      <thead><tr><th>바이어</th><th>나라</th><th>등급</th><th class="num">위험 점수</th><th class="num">채권</th>
-        <th class="num">연체</th><th>위험 신호</th></tr></thead>
-      <tbody><tr><td class="name">Changzhou Wenant Engineering Co., Ltd.</td><td>중국</td><td><span class="chip g-C" data-i="47">C</span></td><td class="num">77.0%</td><td class="num">$24,530</td><td class="num">$24,530</td><td>최근 1년 분쟁 비율 50%</td></tr><tr><td class="name">Camolin Instrumentación S.A. de C.V.</td><td>멕시코</td><td><span class="chip g-C" data-i="133">C</span></td><td class="num">70.9%</td><td class="num">$93,460</td><td class="num">$59,200</td><td>연체 금액 $59,200</td></tr><tr><td class="name">Tevura Automation Inc.</td><td>미국</td><td><span class="chip g-C" data-i="117">C</span></td><td class="num">70.3%</td><td class="num">$20,060</td><td class="num">$20,060</td><td>지급 지연이 늘어나는 중(+30일)</td></tr><tr><td class="name">Kalaro Industrial S.A. de C.V.</td><td>멕시코</td><td><span class="chip g-C" data-i="30">C</span></td><td class="num">69.3%</td><td class="num">$70,120</td><td class="num">$19,200</td><td>지급 지연이 늘어나는 중(+29일)</td></tr><tr><td class="name">Corost Comercializadora S.A. de C.V.</td><td>멕시코</td><td><span class="chip g-C" data-i="46">C</span></td><td class="num">67.4%</td><td class="num">$54,540</td><td class="num">$27,300</td><td>연체 금액 $27,300</td></tr><tr><td class="name">Galeth Instruments LLC</td><td>미국</td><td><span class="chip g-C" data-i="61">C</span></td><td class="num">55.5%</td><td class="num">$35,660</td><td class="num">$18,310</td><td>연체 금액 $18,310</td></tr><tr><td class="name">Marano Home &amp; Lab Stores FZE</td><td>아랍에미리트</td><td><span class="chip g-C" data-i="65">C</span></td><td class="num">54.2%</td><td class="num">$80,550</td><td class="num">$10,610</td><td>최근 30일 부정적인 뉴스가 많음</td></tr><tr><td class="name">Sarant Ingeniería S.A. de C.V.</td><td>멕시코</td><td><span class="chip g-C" data-i="103">C</span></td><td class="num">43.7%</td><td class="num">$10,190</td><td class="num">$10,190</td><td>연체 금액 $10,190</td></tr><tr><td class="name">PT Sarida Sarana Industri</td><td>인도네시아</td><td><span class="chip g-C" data-i="58">C</span></td><td class="num">41.4%</td><td class="num">$40,560</td><td class="num">$4,980</td><td>지급 지연이 늘어나는 중(+36일)</td></tr><tr><td class="name">Galost Automation Ltd.</td><td>인도</td><td><span class="chip g-C" data-i="118">C</span></td><td class="num">38.3%</td><td class="num">$48,780</td><td class="num">$21,910</td><td>연체 금액 $21,910</td></tr></tbody>
-    </table>
-    <ol class="top-cards"><li class="tcard"><div class="tc-head"><span class="tc-name">Changzhou Wenant Engineering Co., Ltd.</span><span class="chip g-C" data-i="47">C</span></div><p class="tc-meta">중국 · 동아시아</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">77.0%</dd></div><div><dt>채권</dt><dd class="num">$24,530</dd></div><div><dt>연체</dt><dd class="num">$24,530</dd></div></dl><p class="tc-sig">최근 1년 분쟁 비율 50%</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Camolin Instrumentación S.A. de C.V.</span><span class="chip g-C" data-i="133">C</span></div><p class="tc-meta">멕시코 · 북미·중남미</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">70.9%</dd></div><div><dt>채권</dt><dd class="num">$93,460</dd></div><div><dt>연체</dt><dd class="num">$59,200</dd></div></dl><p class="tc-sig">연체 금액 $59,200</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Tevura Automation Inc.</span><span class="chip g-C" data-i="117">C</span></div><p class="tc-meta">미국 · 북미·중남미</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">70.3%</dd></div><div><dt>채권</dt><dd class="num">$20,060</dd></div><div><dt>연체</dt><dd class="num">$20,060</dd></div></dl><p class="tc-sig">지급 지연이 늘어나는 중(+30일)</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Kalaro Industrial S.A. de C.V.</span><span class="chip g-C" data-i="30">C</span></div><p class="tc-meta">멕시코 · 북미·중남미</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">69.3%</dd></div><div><dt>채권</dt><dd class="num">$70,120</dd></div><div><dt>연체</dt><dd class="num">$19,200</dd></div></dl><p class="tc-sig">지급 지연이 늘어나는 중(+29일)</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Corost Comercializadora S.A. de C.V.</span><span class="chip g-C" data-i="46">C</span></div><p class="tc-meta">멕시코 · 북미·중남미</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">67.4%</dd></div><div><dt>채권</dt><dd class="num">$54,540</dd></div><div><dt>연체</dt><dd class="num">$27,300</dd></div></dl><p class="tc-sig">연체 금액 $27,300</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Galeth Instruments LLC</span><span class="chip g-C" data-i="61">C</span></div><p class="tc-meta">미국 · 북미·중남미</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">55.5%</dd></div><div><dt>채권</dt><dd class="num">$35,660</dd></div><div><dt>연체</dt><dd class="num">$18,310</dd></div></dl><p class="tc-sig">연체 금액 $18,310</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Marano Home &amp; Lab Stores FZE</span><span class="chip g-C" data-i="65">C</span></div><p class="tc-meta">아랍에미리트 · 중동·아프리카</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">54.2%</dd></div><div><dt>채권</dt><dd class="num">$80,550</dd></div><div><dt>연체</dt><dd class="num">$10,610</dd></div></dl><p class="tc-sig">최근 30일 부정적인 뉴스가 많음</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Sarant Ingeniería S.A. de C.V.</span><span class="chip g-C" data-i="103">C</span></div><p class="tc-meta">멕시코 · 북미·중남미</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">43.7%</dd></div><div><dt>채권</dt><dd class="num">$10,190</dd></div><div><dt>연체</dt><dd class="num">$10,190</dd></div></dl><p class="tc-sig">연체 금액 $10,190</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">PT Sarida Sarana Industri</span><span class="chip g-C" data-i="58">C</span></div><p class="tc-meta">인도네시아 · 동남아·남아</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">41.4%</dd></div><div><dt>채권</dt><dd class="num">$40,560</dd></div><div><dt>연체</dt><dd class="num">$4,980</dd></div></dl><p class="tc-sig">지급 지연이 늘어나는 중(+36일)</p></li><li class="tcard"><div class="tc-head"><span class="tc-name">Galost Automation Ltd.</span><span class="chip g-C" data-i="118">C</span></div><p class="tc-meta">인도 · 동남아·남아</p><dl class="tc-nums"><div><dt>위험 점수</dt><dd class="num">38.3%</dd></div><div><dt>채권</dt><dd class="num">$48,780</dd></div><div><dt>연체</dt><dd class="num">$21,910</dd></div></dl><p class="tc-sig">연체 금액 $21,910</p></li></ol>
-  </section>
-
-  <section class="card">
-    <h2>지역별 채권</h2>
-    <p class="sub">채권이 많은 지역부터입니다. 막대의 빨간 부분이 지금 C등급인 채권입니다.</p>
-    <div class="regs"><div class="reg" data-r="동남아·남아"><div class="reg-head"><span>동남아·남아</span><span class="num">$1,319,352</span></div><div class="reg-track"><div class="reg-bar" style="width:100.0000%"><div class="reg-c" style="width:6.7715%"></div></div></div><p class="reg-note">C등급 <span class="num" data-rc>$89,340</span> · <span class="num" data-rp>6.8%</span></p></div><div class="reg" data-r="동아시아"><div class="reg-head"><span>동아시아</span><span class="num">$971,884</span></div><div class="reg-track"><div class="reg-bar" style="width:73.6637%"><div class="reg-c" style="width:14.1583%"></div></div></div><p class="reg-note">C등급 <span class="num" data-rc>$137,602</span> · <span class="num" data-rp>14.2%</span></p></div><div class="reg" data-r="북미·중남미"><div class="reg-head"><span>북미·중남미</span><span class="num">$733,666</span></div><div class="reg-track"><div class="reg-bar" style="width:55.6081%"><div class="reg-c" style="width:64.2867%"></div></div></div><p class="reg-note">C등급 <span class="num" data-rc>$471,650</span> · <span class="num" data-rp>64.3%</span></p></div><div class="reg" data-r="서유럽"><div class="reg-head"><span>서유럽</span><span class="num">$543,729</span></div><div class="reg-track"><div class="reg-bar" style="width:41.2118%"><div class="reg-c" style="width:2.6815%"></div></div></div><p class="reg-note">C등급 <span class="num" data-rc>$14,580</span> · <span class="num" data-rp>2.7%</span></p></div><div class="reg" data-r="중동·아프리카"><div class="reg-head"><span>중동·아프리카</span><span class="num">$543,680</span></div><div class="reg-track"><div class="reg-bar" style="width:41.2081%"><div class="reg-c" style="width:53.7173%"></div></div></div><p class="reg-note">C등급 <span class="num" data-rc>$292,050</span> · <span class="num" data-rp>53.7%</span></p></div><div class="reg" data-r="중동부유럽"><div class="reg-head"><span>중동부유럽</span><span class="num">$178,593</span></div><div class="reg-track"><div class="reg-bar" style="width:13.5364%"><div class="reg-c" style="width:23.8307%"></div></div></div><p class="reg-note">C등급 <span class="num" data-rc>$42,560</span> · <span class="num" data-rp>23.8%</span></p></div></div>
-  </section>
+    <section class="card">
+      <h2>지역별 채권</h2>
+      <p class="sub">채권이 많은 지역부터입니다. 막대의 빨간 부분이 지금 C등급인 채권입니다.</p>
+      <div class="regs"><div class="reg" data-r="동남아·남아"><div class="reg-head"><span>동남아·남아</span><span class="num">$1,319,352</span></div><div class="reg-track"><div class="reg-bar" style="width:100.0000%"><div class="reg-c" style="width:6.7715%"></div></div></div><p class="reg-note">C등급 <span class="num" data-rc>$89,340</span> · <span class="num" data-rp>6.8%</span></p></div><div class="reg" data-r="동아시아"><div class="reg-head"><span>동아시아</span><span class="num">$971,884</span></div><div class="reg-track"><div class="reg-bar" style="width:73.6637%"><div class="reg-c" style="width:14.1583%"></div></div></div><p class="reg-note">C등급 <span class="num" data-rc>$137,602</span> · <span class="num" data-rp>14.2%</span></p></div><div class="reg" data-r="북미·중남미"><div class="reg-head"><span>북미·중남미</span><span class="num">$733,666</span></div><div class="reg-track"><div class="reg-bar" style="width:55.6081%"><div class="reg-c" style="width:64.2867%"></div></div></div><p class="reg-note">C등급 <span class="num" data-rc>$471,650</span> · <span class="num" data-rp>64.3%</span></p></div><div class="reg" data-r="서유럽"><div class="reg-head"><span>서유럽</span><span class="num">$543,729</span></div><div class="reg-track"><div class="reg-bar" style="width:41.2118%"><div class="reg-c" style="width:2.6815%"></div></div></div><p class="reg-note">C등급 <span class="num" data-rc>$14,580</span> · <span class="num" data-rp>2.7%</span></p></div><div class="reg" data-r="중동·아프리카"><div class="reg-head"><span>중동·아프리카</span><span class="num">$543,680</span></div><div class="reg-track"><div class="reg-bar" style="width:41.2081%"><div class="reg-c" style="width:53.7173%"></div></div></div><p class="reg-note">C등급 <span class="num" data-rc>$292,050</span> · <span class="num" data-rp>53.7%</span></p></div><div class="reg" data-r="중동부유럽"><div class="reg-head"><span>중동부유럽</span><span class="num">$178,593</span></div><div class="reg-track"><div class="reg-bar" style="width:13.5364%"><div class="reg-c" style="width:23.8307%"></div></div></div><p class="reg-note">C등급 <span class="num" data-rc>$42,560</span> · <span class="num" data-rp>23.8%</span></p></div></div>
+    </section>
+    </div>
+  </div>
 </main>
 
 <footer class="wrap foot">(가상) 합성 데이터 · 기준일 2026-09-30 · 위험 점수는 판단을 돕는 값이고 결정은 사람이 합니다</footer>
@@ -218,7 +230,7 @@
   // KPI 숫자가 칸보다 넓으면 한 단계씩 줄인다 — 네 칸이 같은 크기로 함께
   function fit() {
     const els = $$('.k-num.fit');
-    const steps = ['f1', 'f2', 'f3'];
+    const steps = ['f1', 'f2'];
     els.forEach(el => el.classList.remove(...steps));
     for (const c of steps) {
       if (els.every(el => el.scrollWidth <= el.clientWidth)) break;

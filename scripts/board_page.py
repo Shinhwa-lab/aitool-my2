@@ -17,11 +17,11 @@ import pandas as pd
 # design.md 토큰 — 화면의 색 · 글자 · 간격 · 모서리는 이 값만 쓴다
 TOKENS = {
     # 색 6개
-    "--bg": "#F5F6F8",
-    "--surface": "#FFFFFF",
-    "--border": "#D9DEE4",
+    "--bg": "#FAF8F3",  # v2
+    "--surface": "#FAF8F3",  # v2
+    "--border": "#CFCAC0",  # v2
     "--text": "#1B2026",
-    "--text-2": "#5A6472",
+    "--text-2": "#5E5A52",  # v2
     "--accent": "#1D4F7A",
     # 등급 색 4개
     "--grade-s": "#1E7344",
@@ -30,11 +30,12 @@ TOKENS = {
     "--grade-c": "#B3261E",
     # 글꼴
     "--font": "'Noto Sans KR', sans-serif",
+    "--font-serif": "'Noto Serif KR', serif",  # v2 — 제목에만
     # 글자 크기 6단계(굵기 / 크기 / 줄 높이)
-    "--fs-display": "700 40px/1.15 var(--font)",
-    "--fs-display-sm": "700 32px/1.15 var(--font)",
-    "--fs-title": "700 28px/1.3 var(--font)",
-    "--fs-section": "700 20px/1.4 var(--font)",
+    "--fs-display": "700 48px/1.05 var(--font)",  # v2
+    "--fs-display-sm": "700 36px/1.1 var(--font)",  # v2
+    "--fs-title": "700 44px/1.2 var(--font-serif)",  # v2
+    "--fs-section": "700 24px/1.35 var(--font-serif)",  # v2
     "--fs-body": "400 16px/1.6 var(--font)",
     "--fs-small": "400 14px/1.5 var(--font)",
     # 간격
@@ -135,9 +136,10 @@ def render(df, s, regions, top):
         sig = e(r["signal_1"]) if isinstance(r["signal_1"], str) else "–"
         country = COUNTRY_KO[r["country_code"]]
         top_rows.append(
-            f'<tr><td class="name">{e(r["buyer_name"])}</td><td>{country}</td><td>{chip(gr, i)}</td>'
+            f'<tr><td class="name"><span class="t-name">{e(r["buyer_name"])}</span>'
+            f'<span class="t-meta">{country} · {sig}</span></td><td>{chip(gr, i)}</td>'
             f'<td class="num">{pct(r["pd_30d"])}</td><td class="num">{money(r["open_ar_usd"])}</td>'
-            f'<td class="num">{money(r["overdue_usd"])}</td><td>{sig}</td></tr>')
+            f'<td class="num">{money(r["overdue_usd"])}</td></tr>')
         top_cards.append(
             f'<li class="tcard"><div class="tc-head"><span class="tc-name">{e(r["buyer_name"])}</span>{chip(gr, i)}</div>'
             f'<p class="tc-meta">{country} · {e(r["region"])}</p>'
@@ -174,7 +176,7 @@ def render(df, s, regions, top):
 <title>바이어 리스크 한눈에</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@700&display=swap" rel="stylesheet">
 <style>
   :root {{
 {css_vars}
@@ -186,29 +188,35 @@ def render(df, s, regions, top):
   .wrap {{ max-width: var(--page-max); margin: 0 auto; padding: 0 var(--sp-7); }}
   .num {{ font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }}
 
-  .band {{ background: var(--accent); color: var(--surface); font: var(--fs-small); }}
-  .band .wrap {{ padding-top: var(--sp-2); padding-bottom: var(--sp-2); }}
-  .head {{ padding-top: var(--sp-7); padding-bottom: var(--sp-6); }}
+  .band {{ color: var(--text-2); font: var(--fs-small); }}
+  .band .wrap {{ padding-top: var(--sp-6); padding-bottom: 0; }}
+  .head {{ padding-top: var(--sp-5); margin-bottom: var(--sp-7); }}
+  .head::after {{ content: ''; display: block; margin-top: var(--sp-5); border-bottom: 1px solid var(--text); }}
   .head h1 {{ font: var(--fs-title); color: var(--text); }}
   .head p {{ font: var(--fs-small); color: var(--text-2); margin-top: var(--sp-1); }}
 
-  main {{ display: flex; flex-direction: column; gap: var(--sp-6); }}
-  .card {{ background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-           box-shadow: var(--shadow); padding: var(--sp-5); min-width: 0; }}
+  main {{ display: flex; flex-direction: column; gap: var(--sp-8); }}
+  .card {{ background: var(--bg); border-top: 1px solid var(--border); box-shadow: var(--shadow);
+           padding: var(--sp-4) 0 0; min-width: 0; }}
   .card h2 {{ font: var(--fs-section); color: var(--text); }}
-  .sub {{ font: var(--fs-small); color: var(--text-2); margin-top: var(--sp-1); }}
+  .sub {{ font: var(--fs-small); color: var(--text-2); margin-top: var(--sp-2); }}
 
-  .kpis {{ display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--sp-4); }}
+  .kpis {{ display: grid; grid-template-columns: minmax(0, 0.7fr) repeat(3, minmax(0, 1fr)); gap: var(--sp-5); }}
   .k-label {{ font: var(--fs-small); font-weight: 500; color: var(--text-2); }}
   .k-num {{ font: var(--fs-display); color: var(--text); font-variant-numeric: tabular-nums; white-space: nowrap;
             overflow: hidden; margin-top: var(--sp-3); }}
   .k-num.f1 {{ font: var(--fs-display-sm); }}
-  .k-num.f2 {{ font: var(--fs-title); }}
-  .k-num.f3 {{ font: var(--fs-section); }}
+  .k-num.f2 {{ font: var(--fs-section); font-family: var(--font); }}  /* 숫자는 고딕 그대로, 크기만 한 단계 */
   .k-unit {{ font: var(--fs-small); font-weight: 500; color: var(--text-2); margin-left: var(--sp-1); }}
   .k-note {{ font: var(--fs-small); color: var(--text-2); margin-top: var(--sp-2); }}
 
-  .pair {{ display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--sp-4); }}
+  .split {{ display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sp-8); }}
+  .side, .mainc {{ display: flex; flex-direction: column; gap: var(--sp-8); min-width: 0; }}
+  @media (min-width: 1100px) {{
+    .split {{ grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); grid-template-areas: 'main side'; column-gap: var(--sp-7); }}
+    .mainc {{ grid-area: main; }}
+    .side {{ grid-area: side; position: sticky; top: var(--sp-5); align-self: start; gap: var(--sp-7); }}
+  }}
   .dist-bar {{ display: flex; gap: var(--sp-1); height: var(--sp-6); margin-top: var(--sp-5); }}
   .seg {{ flex-basis: 0; min-width: var(--sp-1); border-radius: var(--radius-sm); display: flex; align-items: center;
           padding: 0 var(--sp-2); color: var(--surface); font: var(--fs-small); font-weight: 500; white-space: nowrap;
@@ -233,14 +241,16 @@ def render(df, s, regions, top):
 
   .line-label {{ display: flex; justify-content: space-between; align-items: baseline; margin-top: var(--sp-5);
                  font: var(--fs-small); color: var(--text-2); }}
-  .line-label strong {{ font: var(--fs-title); color: var(--accent); font-variant-numeric: tabular-nums; }}
+  .line-label strong {{ font: var(--fs-display-sm); color: var(--accent); font-variant-numeric: tabular-nums; }}
   input[type=range] {{ width: 100%; margin: var(--sp-3) 0 0; accent-color: var(--accent); }}
   .scale {{ display: flex; justify-content: space-between; font: var(--fs-small); color: var(--text-2); }}
   .delta {{ margin-top: var(--sp-4); padding-top: var(--sp-3); border-top: 1px solid var(--border);
             font: var(--fs-body); font-weight: 500; color: var(--text); }}
 
   .top {{ margin-top: var(--sp-4); }}
-  .top td.name {{ font-weight: 500; }}
+  .top td.name {{ width: 100%; }}
+  .t-name {{ display: block; font-weight: 500; }}
+  .t-meta {{ display: block; font: var(--fs-small); color: var(--text-2); margin-top: var(--sp-1); }}
   .top-cards {{ display: none; list-style: none; padding: 0; margin-top: var(--sp-4); }}
   .tcard {{ border-top: 1px solid var(--border); padding: var(--sp-4) 0; }}
   .tcard:last-child {{ padding-bottom: 0; }}
@@ -259,23 +269,22 @@ def render(df, s, regions, top):
   .reg-c {{ height: 100%; background: var(--grade-c); }}
   .reg-note {{ font: var(--fs-small); color: var(--text-2); margin-top: var(--sp-1); }}
 
-  .foot {{ font: var(--fs-small); color: var(--text-2); padding-top: var(--sp-7); padding-bottom: var(--sp-7); }}
+  .foot {{ font: var(--fs-small); color: var(--text-2); margin-top: var(--sp-8); padding-bottom: var(--sp-7); }}
+  .foot::before {{ content: ''; display: block; margin-bottom: var(--sp-4); border-top: 1px solid var(--border); }}
 
   @media (max-width: 900px) {{
-    .kpis {{ grid-template-columns: repeat(2, minmax(0, 1fr)); }}
-    .pair {{ grid-template-columns: minmax(0, 1fr); }}
+    .kpis {{ grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--sp-6); }}
   }}
   @media (max-width: 640px) {{
     .wrap {{ padding: 0 var(--sp-4); }}
-    .band .wrap {{ padding-top: var(--sp-2); padding-bottom: var(--sp-2); }}
-    .head {{ padding-top: var(--sp-5); padding-bottom: var(--sp-5); }}
-    main {{ gap: var(--sp-4); }}
-    .card {{ padding: var(--sp-4); }}
-    .kpis {{ gap: var(--sp-3); }}
+    .band .wrap {{ padding-top: var(--sp-5); }}
+    .head {{ margin-bottom: var(--sp-6); }}
+    main {{ gap: var(--sp-7); }}
+    .kpis {{ column-gap: var(--sp-4); }}
     .k-num {{ font: var(--fs-display-sm); }}
     .top {{ display: none; }}
     .top-cards {{ display: block; }}
-    .foot {{ padding-top: var(--sp-6); padding-bottom: var(--sp-6); }}
+    .foot {{ margin-top: var(--sp-7); padding-bottom: var(--sp-6); }}
   }}
 </style>
 </head>
@@ -302,39 +311,43 @@ def render(df, s, regions, top):
       <p class="k-note">연체가 있는 곳 {over_n}곳</p></div>
   </section>
 
-  <section class="pair">
-    <div class="card">
-      <h2>신호등 등급 분포</h2>
-      <p class="sub">막대 길이는 곳 수입니다. 등급은 지금 위험 선 기준입니다.</p>
-      <div class="dist-bar" role="img" aria-label="등급별 곳 수 막대">{segs}</div>
-      <table class="dist-table"><tbody>{dist_rows}</tbody></table>
-    </div>
-    <div class="card">
-      <h2>위험 선</h2>
-      <p class="sub">위험 점수가 선 이상이면 C, 선의 절반 이상이면 B, 4분의 1 이상이면 A, 나머지는 S입니다.</p>
-      <label class="line-label" for="line">위험 선 <strong id="line-val">{LINE0}%</strong></label>
-      <input type="range" id="line" min="5" max="30" step="1" value="{LINE0}">
-      <div class="scale"><span>5%</span><span>30%</span></div>
-      <p class="delta" id="delta">처음 {LINE0}%와 같습니다</p>
-    </div>
-  </section>
+  <!-- 2단: 넓은 화면은 왼쪽(전화할 10곳 · 지역) + 오른쪽(위험 선 · 분포, 따라옴). 휴대폰은 위험 선 → 분포 → 10곳 → 지역 -->
+  <div class="split">
+    <aside class="side" aria-label="위험 선과 등급 분포">
+      <section class="card">
+        <h2>위험 선</h2>
+        <p class="sub">위험 점수가 선 이상이면 C, 선의 절반 이상이면 B, 4분의 1 이상이면 A, 나머지는 S입니다.</p>
+        <label class="line-label" for="line">위험 선 <strong id="line-val">{LINE0}%</strong></label>
+        <input type="range" id="line" min="5" max="30" step="1" value="{LINE0}">
+        <div class="scale"><span>5%</span><span>30%</span></div>
+        <p class="delta" id="delta">처음 {LINE0}%와 같습니다</p>
+      </section>
+      <section class="card">
+        <h2>신호등 등급 분포</h2>
+        <p class="sub">막대 길이는 곳 수입니다. 등급은 지금 위험 선 기준입니다.</p>
+        <div class="dist-bar" role="img" aria-label="등급별 곳 수 막대">{segs}</div>
+        <table class="dist-table"><tbody>{dist_rows}</tbody></table>
+      </section>
+    </aside>
+    <div class="mainc">
+    <section class="card">
+      <h2>위험 상위 10</h2>
+      <p class="sub">이번 주에 전화할 곳입니다. 위험 점수가 높은 순서이고, 신호는 확인해 볼 이유입니다.</p>
+      <table class="top">
+        <thead><tr><th>바이어 · 나라 · 위험 신호</th><th>등급</th><th class="num">위험 점수</th><th class="num">채권</th>
+          <th class="num">연체</th></tr></thead>
+        <tbody>{''.join(top_rows)}</tbody>
+      </table>
+      <ol class="top-cards">{''.join(top_cards)}</ol>
+    </section>
 
-  <section class="card">
-    <h2>위험 상위 10</h2>
-    <p class="sub">이번 주에 전화할 곳입니다. 위험 점수가 높은 순서이고, 신호는 확인해 볼 이유입니다.</p>
-    <table class="top">
-      <thead><tr><th>바이어</th><th>나라</th><th>등급</th><th class="num">위험 점수</th><th class="num">채권</th>
-        <th class="num">연체</th><th>위험 신호</th></tr></thead>
-      <tbody>{''.join(top_rows)}</tbody>
-    </table>
-    <ol class="top-cards">{''.join(top_cards)}</ol>
-  </section>
-
-  <section class="card">
-    <h2>지역별 채권</h2>
-    <p class="sub">채권이 많은 지역부터입니다. 막대의 빨간 부분이 지금 C등급인 채권입니다.</p>
-    <div class="regs">{''.join(reg_rows)}</div>
-  </section>
+    <section class="card">
+      <h2>지역별 채권</h2>
+      <p class="sub">채권이 많은 지역부터입니다. 막대의 빨간 부분이 지금 C등급인 채권입니다.</p>
+      <div class="regs">{''.join(reg_rows)}</div>
+    </section>
+    </div>
+  </div>
 </main>
 
 <footer class="wrap foot">(가상) 합성 데이터 · 기준일 {AS_OF} · 위험 점수는 판단을 돕는 값이고 결정은 사람이 합니다</footer>
@@ -358,7 +371,7 @@ def render(df, s, regions, top):
   // KPI 숫자가 칸보다 넓으면 한 단계씩 줄인다 — 네 칸이 같은 크기로 함께
   function fit() {{
     const els = $$('.k-num.fit');
-    const steps = ['f1', 'f2', 'f3'];
+    const steps = ['f1', 'f2'];
     els.forEach(el => el.classList.remove(...steps));
     for (const c of steps) {{
       if (els.every(el => el.scrollWidth <= el.clientWidth)) break;
