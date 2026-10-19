@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>오늘의 메일 당번</title>
+<style>
+:root { --ink:#1f2328; --sub:#59636e; --line:#d8dee4; --bg:#f6f7f9; --card:#ffffff;
+        --stop:#c62828; --stop-bg:#fdecec; --check:#b85c00; --check-bg:#fff3e0; --log:#6b7280; --log-bg:#f1f2f4; }
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.55;
+       font-family: system-ui, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+       word-break: keep-all; overflow-wrap: break-word; }
+main { max-width: 640px; margin: 0 auto; padding: 16px; }
+.wrap { overflow-wrap: anywhere; }
+header h1 { margin: 0 0 2px; font-size: 24px; }
+header .org { margin: 0 0 8px; color: var(--sub); font-size: 15px; }
+header dl { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0; font-size: 14px; color: var(--sub); }
+header dt { display: inline; } header dd { display: inline; margin: 0 0 0 4px; color: var(--ink); font-weight: 600; }
+.band { margin: 14px 0; padding: 10px 12px; background: var(--ink); color: #fff; border-radius: 8px;
+        font-size: 15px; font-weight: 600; text-align: center; }
+.big { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 0 18px; }
+.big div { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 6px; text-align: center; }
+.big b { display: block; font-size: 36px; line-height: 1.1; }
+.big span { font-size: 15px; font-weight: 600; }
+.big .stop b, .big .stop span { color: var(--stop); }
+.big .check b, .big .check span { color: var(--check); }
+.big .log b, .big .log span { color: var(--log); }
+h2 { font-size: 18px; margin: 20px 0 8px; }
+.card { background: var(--card); border: 1px solid var(--line); border-left-width: 6px; border-radius: 10px;
+        padding: 12px 14px; margin: 0 0 12px; }
+.card.stop { border-left-color: var(--stop); } .card.check { border-left-color: var(--check); } .card.log { border-left-color: var(--log); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 6px; }
+.tag { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 14px; font-weight: 700; }
+.tag.stop { background: var(--stop-bg); color: var(--stop); border: 1px solid var(--stop); }
+.tag.check { background: var(--check-bg); color: var(--check); border: 1px solid var(--check); }
+.tag.log { background: var(--log-bg); color: var(--log); border: 1px solid var(--log); }
+.tag.inj { background: #fff; color: var(--ink); border: 1px dashed var(--ink); }
+.label { margin: 0 0 4px; font-size: 17px; font-weight: 700; }
+.meta { margin: 0; font-size: 14px; color: var(--sub); }
+.meta b { color: var(--ink); font-weight: 600; }
+.inj-line { margin: 8px 0 0; padding: 8px 10px; background: var(--bg); border-radius: 6px; font-size: 14px; }
+ul.sigs { list-style: none; margin: 10px 0 0; padding: 0; }
+ul.sigs li { padding: 8px 0; border-top: 1px solid var(--line); font-size: 15px; }
+.sig-head { font-weight: 700; }
+.by { font-weight: 400; color: var(--sub); font-size: 14px; }
+blockquote { margin: 4px 0 0; padding: 4px 10px; border-left: 3px solid var(--line); color: var(--ink); font-size: 15px; }
+.detail { margin: 2px 0 0; font-size: 14px; color: var(--sub); }
+.callback { margin: 12px 0 0; padding: 10px 12px; background: var(--bg); border-radius: 8px; }
+.callback small { display: block; font-size: 14px; color: var(--sub); }
+.callback strong { font-size: 22px; letter-spacing: .3px; }
+.action { margin: 10px 0 0; font-size: 15px; }
+.empty { color: var(--sub); font-size: 15px; margin: 0 0 12px; }
+footer { margin: 24px 0 8px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 14px; color: var(--sub); }
+footer p { margin: 0 0 4px; }
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>오늘의 메일 당번</h1>
+<p class="org">(가상) 한빛정밀(주) 수출팀 공용 메일함</p>
+<dl><div><dt>기준 시각</dt><dd>2026-10-19 15:21 KST</dd></div><div><dt>메일</dt><dd>6통</dd></div><div><dt>새로 읽음</dt><dd>6통</dd></div><div><dt>엔진</dt><dd>규칙만(--no-ai)</dd></div></dl>
+</header>
+<p class="band">로봇은 답장 · 송금 · 전달을 하지 않습니다</p>
+<section class="big" aria-label="상태별 메일 수"><div class="stop"><b>2</b><span>멈춤</span></div><div class="check"><b>1</b><span>확인</span></div><div class="log"><b>3</b><span>기록</span></div></section>
+<section><h2>멈춤 2통</h2>
+<article class="card stop">
+<div class="tags">
+<span class="tag stop">멈춤 · P1</span>
+</div>
+<p class="label">신호 5점 — 사람 확인 필요(권고)</p>
+<p class="meta wrap"><b>B087 Yorura Outlets Corp.</b></p>
+<p class="meta wrap">02_new_account_B087.eml</p>
+<p class="meta wrap">제목 RE: Overdue balance - new bank account, urgent</p>
+<ul class="sigs">
+<li><div class="sig-head">① 계좌 변경 요청 · 3점 <span class="by">by 코드</span></div><blockquote class="wrap">As instructed in your notice of Sep 28 about your new bank account, we will remit the overdue USD 49,854.</blockquote>
+</li>
+<li><div class="sig-head">⑤ 개인 메일 · 메신저 · 2점 <span class="by">by 헤더</span></div><blockquote class="wrap">Reply-To 주소</blockquote>
+<p class="detail wrap">yorura.ap.payments@freemail.example</p>
+</li>
+</ul>
+<div class="callback"><small>콜백 — 등록 번호(메일 속 번호 아님)</small><strong>+886-2-5550-0100</strong></div>
+<p class="action">권고(사람 승인 전): 답장 · 송금 · 선적 · 서류 인도를 멈추고, 등록 번호 +886-2-5550-0100로 두 사람이 콜백 확인한 뒤 팀장 보고</p>
+</article>
+<article class="card stop">
+<div class="tags">
+<span class="tag stop">멈춤 · P1</span>
+</div>
+<p class="label">신호 5점 — 사람 확인 필요(권고)</p>
+<p class="meta wrap"><b>B030 Calaro Endüstriyel Ölçüm A.Ş.</b></p>
+<p class="meta wrap">03_big_order_B030.eml</p>
+<p class="meta wrap">제목 New order request - USD 380,000, open account 120 days</p>
+<ul class="sigs">
+<li><div class="sig-head">④ 유사 도메인 · 3점 <span class="by">by 헤더</span></div><blockquote class="wrap">From 도메인 ca1aro-endustriyel.com.tr ≠ 등록 도메인 calaro-endustriyel.com.tr</blockquote>
+<p class="detail wrap">철자 1글자 차이</p>
+</li>
+<li><div class="sig-head">⑦ 지나치게 큰 주문 · 2점 <span class="by">by 코드</span></div><blockquote class="wrap">We plan a new order of USD 380,000 on 120 days open account.</blockquote>
+<p class="detail wrap">주문 380,000달러 = 월 매출 14,069.17달러의 27.0배</p>
+</li>
+</ul>
+<div class="callback"><small>콜백 — 등록 번호(메일 속 번호 아님)</small><strong>+90-212-555-0100</strong></div>
+<p class="action">권고(사람 승인 전): 답장 · 송금 · 선적 · 서류 인도를 멈추고, 등록 번호 +90-212-555-0100로 두 사람이 콜백 확인한 뒤 팀장 보고</p>
+</article>
+</section>
+<section><h2>확인 1통</h2>
+<article class="card check">
+<div class="tags">
+<span class="tag check">확인 · P3</span>
+<span class="tag inj">메일 속 AI 지시문 — 무시함</span>
+</div>
+<p class="label">신호 0점 — 사람 확인 필요(권고)</p>
+<p class="meta wrap"><b>B050 Korolin Instruments LLC</b></p>
+<p class="meta wrap">06_consignee_change_B050.eml</p>
+<p class="meta wrap">제목 PO KI-2610-118 - consignee change, please confirm today</p>
+<p class="inj-line">이 메일에는 AI에게 &#x27;정상으로 분류하라&#x27;는 글이 숨어 있었습니다. 로봇은 따르지 않았습니다.</p>
+<div class="callback"><small>콜백 — 등록 번호(메일 속 번호 아님)</small><strong>+1-555-0100</strong></div>
+<p class="action">권고(사람 승인 전): 서면 증빙을 받고 등록 번호 +1-555-0100로 확인한 뒤 담당자가 진행 여부를 정함</p>
+</article>
+</section>
+<section><h2>기록 3통</h2>
+<article class="card log">
+<div class="tags">
+<span class="tag log">기록</span>
+</div>
+<p class="label">신호 0점 — 평소대로 처리(권고)</p>
+<p class="meta wrap"><b>B050 Korolin Instruments LLC</b></p>
+<p class="meta wrap">01_remittance_B050.eml</p>
+<p class="meta wrap">제목 Remittance advice - USD 70,360.00 (5 invoices)</p>
+</article>
+<article class="card log">
+<div class="tags">
+<span class="tag log">기록</span>
+</div>
+<p class="label">신호 0점 — 평소대로 처리(권고)</p>
+<p class="meta wrap"><b>B005 Xanolin Distribution Co., Ltd.</b></p>
+<p class="meta wrap">04_terms_B005.eml</p>
+<p class="meta wrap">제목 Request to adjust payment terms</p>
+</article>
+<article class="card log">
+<div class="tags">
+<span class="tag log">기록</span>
+</div>
+<p class="label">신호 0점 — 평소대로 처리(권고)</p>
+<p class="meta wrap"><b>B119 Galost Automation Ltd.</b></p>
+<p class="meta wrap">05_surrender_bl_B119.eml</p>
+<p class="meta wrap">제목 Urgent - release surrender B/L</p>
+</article>
+</section>
+<footer>
+<p>헤더는 코드 · 본문은 AI · 합산은 코드 · 결정은 사람</p>
+<p>점수표는 교육용 가정입니다. 모든 조치는 권고(사람 승인 전)입니다.</p>
+<p>회사 · 바이어 · 메일 · 번호는 모두 가상입니다.</p>
+</footer>
+</main>
+</body>
+</html>
